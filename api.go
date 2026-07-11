@@ -38,7 +38,7 @@ type APIServer struct {
 func NewAPIServer(listenAddr string) *APIServer {
 	return &APIServer{
 		listenAddr: listenAddr,
-		store:      store,
+		store:      stores,
 	}
 }
 
