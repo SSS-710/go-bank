@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 )
 
@@ -10,7 +9,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("%+v\n", store)
-	// server := NewAPIServer(":3000", store)
-	// server.Run()
+	server := NewAPIServer(":3000", store)
+	server.Run()
 }
