@@ -16,17 +16,29 @@ func seedAccount(store Storage, fname, lname, pw string) *Account {
 		log.Fatal(err)
 	}
 
-	fmt.Println("new account => ", acc.Number)
+	fmt.Printf("✅ Account created: %s (%s %s)\n", acc.Number, fname, lname)
 
 	return acc
 }
 
-func seedAccounts(s Storage) {
-	seedAccount(s, "anthony", "GG", "hunter88888")
+func seedAccounts(store Storage) {
+	accounts := []struct {
+		fname string
+		lname string
+		pw    string
+	}{
+		{"Anthony", "GG", "hunter88888"},
+		{"John", "Doe", "password123"},
+		{"Alice", "Smith", "secure456"},
+	}
+
+	for _, acc := range accounts {
+		seedAccount(store, acc.fname, acc.lname, acc.pw)
+	}
 }
 
 func main() {
-	seed := flag.Bool("seed", false, "seed the db")
+	seed := flag.Bool("seed", false, "seed the database")
 	flag.Parse()
 
 	store, err := NewPostgresStore()
@@ -39,10 +51,11 @@ func main() {
 	}
 
 	if *seed {
-		fmt.Println("seeding the database")
+		fmt.Println("🌱 Seeding database...")
 		seedAccounts(store)
 	}
 
 	server := NewAPIServer(":3000", store)
+	log.Println("🚀 API Server running on http://localhost:3000")
 	server.Run()
 }
